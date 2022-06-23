@@ -11,6 +11,8 @@ import UIKit
 class MovieListViewController: UIViewController {
     
     var tableView = UITableView()
+    
+    var movieViewModel = MovieListViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,4 +49,15 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     }
     
 }
+
+extension MovieListViewController: MoveListViewModelDelegate {
+    func handleViewModelOutput(_ output: [Result]) {
+        movieViewModel.movies = output
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+}
+
 
