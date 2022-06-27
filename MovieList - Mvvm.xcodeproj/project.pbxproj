@@ -17,6 +17,7 @@
 		01D3A6A2286475E8005CC88F /* MovieListProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D3A6A1286475E8005CC88F /* MovieListProtocols.swift */; };
 		01D3A6A4286476DD005CC88F /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D3A6A3286476DD005CC88F /* Movie.swift */; };
 		01D3A6A6286478A5005CC88F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D3A6A5286478A5005CC88F /* Service.swift */; };
+		01D3A6A828659F50005CC88F /* MovieListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D3A6A728659F50005CC88F /* MovieListTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		01D3A6A1286475E8005CC88F /* MovieListProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListProtocols.swift; sourceTree = "<group>"; };
 		01D3A6A3286476DD005CC88F /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		01D3A6A5286478A5005CC88F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		01D3A6A728659F50005CC88F /* MovieListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 		01D3A684286444F4005CC88F /* MovieList - Mvvm */ = {
 			isa = PBXGroup;
 			children = (
+				01D3A6A92865A0B3005CC88F /* Service */,
 				01D3A69B2864451F005CC88F /* Model */,
 				01D3A6992864450D005CC88F /* ViewModel */,
 				01D3A69A2864451A005CC88F /* View */,
@@ -84,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				01D3A69F28644553005CC88F /* MovieListViewController.swift */,
+				01D3A6A728659F50005CC88F /* MovieListTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -93,7 +97,6 @@
 			children = (
 				01D3A6A1286475E8005CC88F /* MovieListProtocols.swift */,
 				01D3A6A3286476DD005CC88F /* Movie.swift */,
-				01D3A6A5286478A5005CC88F /* Service.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -109,6 +112,14 @@
 				01D3A693286444F6005CC88F /* Info.plist */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		01D3A6A92865A0B3005CC88F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				01D3A6A5286478A5005CC88F /* Service.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -188,6 +199,7 @@
 				01D3A6A4286476DD005CC88F /* Movie.swift in Sources */,
 				01D3A688286444F4005CC88F /* SceneDelegate.swift in Sources */,
 				01D3A69E28644541005CC88F /* MovieListViewModel.swift in Sources */,
+				01D3A6A828659F50005CC88F /* MovieListTableViewCell.swift in Sources */,
 				01D3A6A2286475E8005CC88F /* MovieListProtocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -16,12 +16,16 @@ class MovieListViewModel: MovieListViewModelProtocol {
     
     func loadData() {
         movieService.getMovies { [weak self] movies in
-            self?.delegate?.handleViewModelOutput(movies!)
+            self?.delegate?.handleViewModelOutput(movies)
         }
     }
     
     func selectedRow() {
         
+    }
+    
+    func numberOfRows() -> Int {
+        return movies.count
     }
     
     

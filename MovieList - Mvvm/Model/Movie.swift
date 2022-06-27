@@ -1,34 +1,25 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//  Movie.swift
-//  MovieList - Mvvm
-//
-//  Created by Caner Çağrı on 23.06.2022.
-//
+//   let movieList = try? newJSONDecoder().decode(MovieList.self, from: jsonData)
 
 import Foundation
-import UIKit
-
 
 // MARK: - MovieList
 struct MovieList: Codable {
     let page: Int
     let results: [Result]
-    let totalPages, totalResults: Int
-
 }
 
 // MARK: - Result
 struct Result: Codable {
-    let adult: Bool
-    let backdropPath: String
-    let genreIDS: [Int]
     let id: Int
-    let originalTitle, overview: String
+    let overview: String
     let popularity: Double
-    let posterPath, releaseDate, title: String
-    let video: Bool
-    let voteAverage: Double
-    let voteCount: Int
+    let poster_path: String
+    let release_date, title: String
+    let vote_average: Double
 
+ 
 }
 
