@@ -53,14 +53,13 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
         let cellRow = movieViewModel.movies[indexPath.row]
 
         let imageBaseString = "https://image.tmdb.org/t/p/w500"
-        let urlString = imageBaseString + cellRow.poster_path
+            let urlString = imageBaseString + cellRow.poster_path!
         let imageUrl = URL(string: urlString)
         getData(from: imageUrl!) { data, response, error in
             guard let data = data, error == nil else { return }
-            print(response?.suggestedFilename ?? imageUrl!.lastPathComponent)
-            print("Download Finished")
+            
             // always update the UI from the main thread
-            DispatchQueue.main.async() { [weak self] in
+            DispatchQueue.main.async() { [] in
                 cell.movieImageView.image = UIImage(data: data)
             }
         }
@@ -80,6 +79,18 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //TODO
+        
+        let detailViewModel = MovieListDetailViewController()
+        detailViewModel.movie = movieViewModel.movies[indexPath.row]
+        
+        
+        let vc = MovieListDetailViewController()
+        var navController: UINavigationController!
+        
+        navController = UINavigationController(rootViewController: vc)
+        navController.modalPresentationStyle = .formSheet
+        self.present(navController, animated: true)
+       
     }
     
 }

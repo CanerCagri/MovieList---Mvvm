@@ -13,12 +13,12 @@ struct MovieList: Codable {
 
 // MARK: - Result
 struct Result: Codable {
-    let id: Int
-    let overview: String
-    let popularity: Double
-    let poster_path: String
-    let release_date, title: String
-    let vote_average: Double
+    let id: Int?
+    let overview: String?
+    let popularity: Double?
+    let poster_path: String?
+    let release_date, title: String?
+    let vote_average: Double?
 
  
 }

@@ -32,6 +32,7 @@ class MovieListTableViewCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 17)
         return label
     }()
+    
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
