@@ -8,5 +8,10 @@
 import Foundation
 
 protocol MovieListDetailProtocols {
-    
+    var delegate: MovieListDetailDelegate? { get set }
+    func loadData(id: Int)
+}
+
+protocol MovieListDetailDelegate {
+    func handleViewModelOutput (_ output : SingleMovie)
 }

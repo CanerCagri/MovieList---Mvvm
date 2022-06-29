@@ -7,22 +7,35 @@
 
 import UIKit
 
-class MovieListDetailViewController: UIViewController {
-
+class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
+   
+    var id: Int?
+    
     var viewModel = MovieListDetailViewModel()
-    var imageView = UIImageView()
-
+    var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.borderColor  = UIColor.gray.cgColor
+        imageView.layer.borderWidth  = 1
+        imageView.layer.cornerRadius = 18.75
+        imageView.layer.masksToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     var movie : Result?
-
+    
     var nameLabel: UILabel = {
         var label = UILabel()
         label.numberOfLines = 2
         label.textColor = .black
-        label.font = UIFont.preferredFont(forTextStyle: .body)
+        label.textAlignment = .center
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
-    var overviewLabel: UILabel = {
+    
+    var overViewLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -33,28 +46,77 @@ class MovieListDetailViewController: UIViewController {
         return label
     }()
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = viewModel.movie?.title
+//        title = viewModel.movie?.title
         view.backgroundColor = .white
         
-//        let imageBaseString = "https://image.tmdb.org/t/p/w500"
-//        let urlString = imageBaseString + viewModel.movie!.poster_path!
-//        let imageUrl = URL(string: urlString)
-//        getData(from: imageUrl!) { data, response, error in
-//            guard let data = data, error == nil else { return }
-//
-//            // always update the UI from the main thread
-//            DispatchQueue.main.async() { [weak self] in
-//                self?.imageView.image = UIImage(data: data)
-//            }
-//        }
+        view.addSubview(imageView)
+        view.addSubview(nameLabel)
+        view.addSubview(overViewLabel)
+        
+        setupUI()
+        imageView.backgroundColor = .black
+        viewModel.delegate = self
+        viewModel.loadData(id: id!)
+        
     }
     
-//    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-//        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+     
+    }
+    
+    func handleViewModelOutput(_ output: SingleMovie) {
+        viewModel.movie = output
+        
+        DispatchQueue.main.async {
+            self.getImage(imagePath: (self.viewModel.movie?.posterPath!)!)
+            self.title = self.viewModel.movie?.title!
+            self.nameLabel.text = self.viewModel.movie?.title!
+            self.overViewLabel.text = self.viewModel.movie?.overview!
+        }
+    }
+    
+    func setupUI() {
+        
+        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
+//        imageView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: -30).isActive = true
+        imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4).isActive = true
+        
+        nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
+        nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 70).isActive = true
+        nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -70).isActive = true
+        nameLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 70).isActive = true
+        
+        overViewLabel.topAnchor.constraint(equalTo: nameLabel.topAnchor , constant: 10).isActive = true
+        overViewLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
+        overViewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25).isActive = true
+        overViewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25).isActive = true
 
+    }
+    
+   
+    
+    func getImage(imagePath: String) {
+        let imageBaseString = "https://image.tmdb.org/t/p/w500"
+        let urlString = imageBaseString + imagePath
+        let imageUrl = URL(string: urlString)
+        getData(from: imageUrl!) { data, response, error in
+            guard let data = data, error == nil else { return }
+
+            // always update the UI from the main thread
+            DispatchQueue.main.async() { [weak self] in
+                self?.imageView.image = UIImage(data: data)
+            }
+        }
+    }
+
+        func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+            URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+        }
+    
 }

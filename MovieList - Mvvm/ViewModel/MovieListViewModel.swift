@@ -19,11 +19,7 @@ class MovieListViewModel: MovieListViewModelProtocol {
             self?.delegate?.handleViewModelOutput(movies)
         }
     }
-    
-    func selectedRow() {
-        
-    }
-    
+
     func numberOfRows() -> Int {
         return movies.count
     }

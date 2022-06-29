@@ -65,7 +65,7 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
         }
         cell.nameLabel.text = cellRow.title
         cell.dateLabel.text = cellRow.release_date
-        cell.imdbLabel.text = String(describing: cellRow.vote_average)
+        cell.imdbLabel.text = String(describing: cellRow.vote_average!)
         return cell
     }
     
@@ -80,16 +80,16 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //TODO
         
-        let detailViewModel = MovieListDetailViewController()
-        detailViewModel.movie = movieViewModel.movies[indexPath.row]
         
-        
+//        movieViewModel.selectedRow(id: movieViewModel.movies[indexPath.row].id!)
+//
         let vc = MovieListDetailViewController()
+        vc.id = movieViewModel.movies[indexPath.row].id!
         var navController: UINavigationController!
         
         navController = UINavigationController(rootViewController: vc)
         navController.modalPresentationStyle = .formSheet
-        self.present(navController, animated: true)
+        present(navController, animated: true)
        
     }
     

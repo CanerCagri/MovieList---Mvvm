@@ -10,7 +10,6 @@ import Foundation
 protocol MovieListViewModelProtocol {
     var delegate : MoveListViewModelDelegate? { get set}
     func loadData()
-    func selectedRow()
 }
 
 protocol MoveListViewModelDelegate {
