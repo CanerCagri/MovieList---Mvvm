@@ -9,7 +9,7 @@ import Foundation
 struct SingleMovie: Codable {
     let id: Int?
     let originalTitle, overview, title, posterPath: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case id
         case originalTitle = "original_title"

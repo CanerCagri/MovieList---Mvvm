@@ -13,5 +13,6 @@ protocol MovieListViewModelProtocol {
 }
 
 protocol MoveListViewModelDelegate {
-    func handleViewModelOutput (_ output : [Result])
+    func handleViewModelOutput (_ output: [Result])
+    func loadingActive(status: Bool)
 }

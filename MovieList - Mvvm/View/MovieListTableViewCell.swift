@@ -10,7 +10,6 @@ import UIKit
 class MovieListTableViewCell: UITableViewCell {
     
     // MARK: - Properties
-    
     private var containerView: UIView = {
         let view = UIView()
         view.layer.shadowOpacity = 0.1
@@ -58,7 +57,6 @@ class MovieListTableViewCell: UITableViewCell {
     }()
     
     // MARK: - Functions
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -103,8 +101,7 @@ class MovieListTableViewCell: UITableViewCell {
     }
 }
 
-// MARK: - UIView Extansion
-
+// MARK: - UIView Shadow Extension
 extension UIView {
     func applyShadow(cornerRadius: CGFloat) {
         layer.cornerRadius = cornerRadius

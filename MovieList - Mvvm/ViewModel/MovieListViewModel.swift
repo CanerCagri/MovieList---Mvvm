@@ -16,13 +16,18 @@ class MovieListViewModel: MovieListViewModelProtocol {
     
     
     func loadData(currentPage: Int) {
+        self.delegate?.loadingActive(status: true)
         movieService.getMovies(currentPage: currentPage) { movies in
             self.delegate?.handleViewModelOutput(movies)
         }
+        self.delegate?.loadingActive(status: false)
     }
     
     func numberOfRows() -> Int {
         return movies.count
     }
     
+    func heightForRow() -> Int {
+        return 150
+    }
 }

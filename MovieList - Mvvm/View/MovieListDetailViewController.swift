@@ -9,6 +9,7 @@ import UIKit
 
 class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
     
+    // MARK: - Properties
     var id: Int?
     var viewModel = MovieListDetailViewModel()
     
@@ -44,6 +45,7 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
         return label
     }()
     
+    // MARK: - Override Method
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,11 +53,12 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
         constraints()
     }
     
+    // MARK: - View Model Delegate
     func handleViewModelOutput(_ output: SingleMovie) {
         viewModel.movie = output
         
         DispatchQueue.main.async {
-            self.getImage(imagePath: (self.viewModel.movie?.posterPath!)!)
+//            self.getImage(imagePath: (self.viewModel.movie?.posterPath!)!)
             self.title = self.viewModel.movie?.title!
             self.nameLabel.text = self.viewModel.movie?.title!
             self.overViewLabel.text = self.viewModel.movie?.overview!

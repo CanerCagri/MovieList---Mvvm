@@ -19,7 +19,7 @@ struct Result: Codable {
     let poster_path: String?
     let release_date, title: String?
     let vote_average: Double?
-
- 
+    
+    
 }
 
