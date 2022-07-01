@@ -16,16 +16,17 @@ class MovieListViewModel: MovieListViewModelProtocol {
     
     
     func loadData(currentPage: Int) {
-        self.delegate?.loadingActive(status: true)
         movieService.getMovies(currentPage: currentPage) { movies in
             self.delegate?.handleViewModelOutput(movies)
         }
-        
+    }
+    
+    func delayForActivityIndicator() {
+        self.delegate?.loadingActive(status: true)
         let seconds = 0.5
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             self.delegate?.loadingActive(status: false)
         }
-  
     }
     
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {

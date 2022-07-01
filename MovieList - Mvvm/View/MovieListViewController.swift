@@ -26,6 +26,7 @@ class MovieListViewController: UIViewController {
         super.viewDidLoad()
         appyLoad()
         loadTableView()
+        movieViewModel.delayForActivityIndicator()
     }
     
     func appyLoad() {
@@ -51,7 +52,7 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell" , for: indexPath) as! MovieListTableViewCell
         
         cell.configure(movie: movieViewModel.movies[indexPath.row])
-        return UITableViewCell()
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
