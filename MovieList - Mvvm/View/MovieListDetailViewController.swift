@@ -8,10 +8,10 @@
 import UIKit
 
 class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
-   
-    var id: Int?
     
+    var id: Int?
     var viewModel = MovieListDetailViewModel()
+    
     var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -22,8 +22,6 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
-    var movie : Result?
     
     var nameLabel: UILabel = {
         var label = UILabel()
@@ -46,26 +44,11 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
         return label
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        title = viewModel.movie?.title
-        view.backgroundColor = .white
-        
-        view.addSubview(imageView)
-        view.addSubview(nameLabel)
-        view.addSubview(overViewLabel)
-        
-        setupUI()
-        imageView.backgroundColor = .black
-        viewModel.delegate = self
-        viewModel.loadData(id: id!)
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-     
+        applyLoad()
+        constraints()
     }
     
     func handleViewModelOutput(_ output: SingleMovie) {
@@ -79,12 +62,28 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
         }
     }
     
-    func setupUI() {
+    func getImage(imagePath: String) {
+        let imageBaseString = "https://image.tmdb.org/t/p/w500"
+        let urlString = imageBaseString + imagePath
+        let imageUrl = URL(string: urlString)
+        getData(from: imageUrl!) { data, response, error in
+            guard let data = data, error == nil else { return }
+            
+            DispatchQueue.main.async() { [weak self] in
+                self?.imageView.image = UIImage(data: data)
+            }
+        }
+    }
+    
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+    
+    func constraints() {
         
         imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
         imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
         imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
-//        imageView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: -30).isActive = true
         imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4).isActive = true
         
         nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
@@ -96,27 +95,14 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
         overViewLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
         overViewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25).isActive = true
         overViewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25).isActive = true
-
     }
     
-   
-    
-    func getImage(imagePath: String) {
-        let imageBaseString = "https://image.tmdb.org/t/p/w500"
-        let urlString = imageBaseString + imagePath
-        let imageUrl = URL(string: urlString)
-        getData(from: imageUrl!) { data, response, error in
-            guard let data = data, error == nil else { return }
-
-            // always update the UI from the main thread
-            DispatchQueue.main.async() { [weak self] in
-                self?.imageView.image = UIImage(data: data)
-            }
-        }
+    func applyLoad() {
+        view.backgroundColor = .white
+        view.addSubview(imageView)
+        view.addSubview(nameLabel)
+        view.addSubview(overViewLabel)
+        viewModel.delegate = self
+        viewModel.loadData(id: id!)
     }
-
-        func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-            URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-        }
-    
 }

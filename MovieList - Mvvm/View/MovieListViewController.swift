@@ -11,37 +11,26 @@ import UIKit
 class MovieListViewController: UIViewController {
     
     var tableView = UITableView()
-    
     var movieViewModel = MovieListViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        title = "Movies"
+        
+        appyLoad()
         loadTableView()
     }
     
-    func loadTableView() {
-        tableView.separatorColor = UIColor.clear
-        tableView.tableFooterView = UIView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.allowsSelection = true
-        tableView.register(MovieListTableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.frame = CGRect(x: 0, y: 0, width: view.safeAreaLayoutGuide.layoutFrame.width, height: view.safeAreaLayoutGuide.layoutFrame.height)
-        view.addSubview(tableView)
-    }
-    override func viewWillAppear(_ animated: Bool) {
+    func appyLoad() {
+        title = "Movies"
         movieViewModel.delegate = self
         movieViewModel.loadData()
     }
-    
 }
 
 extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
+        return 150
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -51,14 +40,12 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell" , for: indexPath) as! MovieListTableViewCell
         let cellRow = movieViewModel.movies[indexPath.row]
-
         let imageBaseString = "https://image.tmdb.org/t/p/w500"
             let urlString = imageBaseString + cellRow.poster_path!
         let imageUrl = URL(string: urlString)
         getData(from: imageUrl!) { data, response, error in
             guard let data = data, error == nil else { return }
-            
-            // always update the UI from the main thread
+
             DispatchQueue.main.async() { [] in
                 cell.movieImageView.image = UIImage(data: data)
             }
@@ -73,16 +60,8 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
     
-  
-   
-   
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //TODO
         
-        
-//        movieViewModel.selectedRow(id: movieViewModel.movies[indexPath.row].id!)
-//
         let vc = MovieListDetailViewController()
         vc.id = movieViewModel.movies[indexPath.row].id!
         var navController: UINavigationController!
@@ -93,12 +72,20 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
        
     }
     
+    func loadTableView() {
+        tableView.separatorColor = .none
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.allowsSelection = true
+        tableView.register(MovieListTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.frame = CGRect(x: 0, y: 0, width: view.safeAreaLayoutGuide.layoutFrame.width, height: view.safeAreaLayoutGuide.layoutFrame.height)
+        view.addSubview(tableView)
+    }
 }
 
 extension MovieListViewController: MoveListViewModelDelegate {
     
     func handleViewModelOutput(_ output: [Result]) {
-    
         movieViewModel.movies = output
         
         DispatchQueue.main.async {
