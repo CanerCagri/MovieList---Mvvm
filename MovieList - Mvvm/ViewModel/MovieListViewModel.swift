@@ -8,21 +8,21 @@
 import Foundation
 
 class MovieListViewModel: MovieListViewModelProtocol {
+    
     var delegate: MoveListViewModelDelegate?
     
     var movieService = Service()
     var movies : [Result] = []
     
     
-    func loadData() {
-        movieService.getMovies { [weak self] movies in
-            self?.delegate?.handleViewModelOutput(movies)
+    func loadData(currentPage: Int) {
+        movieService.getMovies(currentPage: currentPage) { movies in
+            self.delegate?.handleViewModelOutput(movies)
         }
     }
-
+    
     func numberOfRows() -> Int {
         return movies.count
     }
-    
     
 }

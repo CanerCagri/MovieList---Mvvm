@@ -9,6 +9,21 @@ import UIKit
 
 class MovieListTableViewCell: UITableViewCell {
     
+    // MARK: - Properties
+    
+    private var containerView: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 0.1
+        view.layer.shadowOffset = CGSize.zero
+        view.layer.shadowColor = UIColor.gray.cgColor
+        view.layer.cornerRadius = 8
+        view.layer.masksToBounds = true
+        view.layer.shadowRadius = 2
+        view.backgroundColor = .systemBackground
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     var movieImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -42,12 +57,13 @@ class MovieListTableViewCell: UITableViewCell {
         return label
     }()
     
+    // MARK: - Functions
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = .clear
         self.selectionStyle = .none
-        
+        applyShadow(cornerRadius: 8)
         constraints()
     }
     
@@ -84,5 +100,18 @@ class MovieListTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - UIView Extansion
+
+extension UIView {
+    func applyShadow(cornerRadius: CGFloat) {
+        layer.cornerRadius = cornerRadius
+        layer.masksToBounds = false
+        layer.shadowRadius = 4.0
+        layer.shadowOpacity = 0.30
+        layer.shadowColor = UIColor.gray.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 5)
     }
 }

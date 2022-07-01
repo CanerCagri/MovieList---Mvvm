@@ -12,6 +12,7 @@ class MovieListViewController: UIViewController {
     
     var tableView = UITableView()
     var movieViewModel = MovieListViewModel()
+    var currentPage = 1
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +24,7 @@ class MovieListViewController: UIViewController {
     func appyLoad() {
         title = "Movies"
         movieViewModel.delegate = self
-        movieViewModel.loadData()
+        movieViewModel.loadData(currentPage: currentPage)
     }
 }
 
@@ -83,15 +84,35 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     }
 }
 
+// MARK: - ViewModel Delegate
+
 extension MovieListViewController: MoveListViewModelDelegate {
     
     func handleViewModelOutput(_ output: [Result]) {
-        movieViewModel.movies = output
+        movieViewModel.movies = movieViewModel.movies + output
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
     }
 }
+
+// MARK: - Paging
+
+extension MovieListViewController {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+        
+        if offsetY > contentHeight - height {
+            currentPage += 1
+            if currentPage < 499{
+                movieViewModel.loadData(currentPage: currentPage)
+            }
+    }
+}
+}
+
 
 

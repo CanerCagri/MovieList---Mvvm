@@ -9,7 +9,7 @@ import Foundation
 
 protocol MovieListViewModelProtocol {
     var delegate : MoveListViewModelDelegate? { get set}
-    func loadData()
+    func loadData(currentPage : Int)
 }
 
 protocol MoveListViewModelDelegate {

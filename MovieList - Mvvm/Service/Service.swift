@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 struct Service {
-    func getMovies(completion: @escaping ([Result]) -> ()) {
-        let url = URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=16b57169954864f01854a6d42dbd2234&language=en-US&page=")
+    func getMovies(currentPage: Int, completion: @escaping ([Result]) -> ()) {
+        let url = URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=16b57169954864f01854a6d42dbd2234&language=en-US&page=\(currentPage)")
         
         URLSession.shared.dataTask(with: url!) { data, response, error in
                   if error != nil {
