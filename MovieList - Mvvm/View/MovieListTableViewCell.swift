@@ -9,6 +9,8 @@ import UIKit
 
 class MovieListTableViewCell: UITableViewCell {
     
+    var movieViewModel = MovieListViewModel()
+    
     // MARK: - Properties
     private var containerView: UIView = {
         let view = UIView()
@@ -59,10 +61,25 @@ class MovieListTableViewCell: UITableViewCell {
     // MARK: - Functions
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         self.selectionStyle = .none
         applyShadow(cornerRadius: 8)
         constraints()
+    }
+    
+    func configure(movie: Result) {
+        let imageBaseString = "https://image.tmdb.org/t/p/w500"
+        let urlString = imageBaseString + movie.poster_path!
+        let imageUrl = URL(string: urlString)
+        movieViewModel.getData(from: imageUrl!) { data, response, error in
+            guard let data = data, error == nil else { return }
+            
+            DispatchQueue.main.async() { [] in
+                self.movieImageView.image = UIImage(data: data)
+            }
+        }
+        nameLabel.text = movie.title
+        dateLabel.text = movie.release_date
+        imdbLabel.text = String(describing: movie.vote_average!)
     }
     
     func constraints() {

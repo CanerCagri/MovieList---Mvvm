@@ -24,7 +24,6 @@ class MovieListViewController: UIViewController {
     // MARK: - Override Function
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         appyLoad()
         loadTableView()
     }
@@ -50,33 +49,16 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell" , for: indexPath) as! MovieListTableViewCell
-        let cellRow = movieViewModel.movies[indexPath.row]
-        let imageBaseString = "https://image.tmdb.org/t/p/w500"
-        let urlString = imageBaseString + cellRow.poster_path!
-        let imageUrl = URL(string: urlString)
-        getData(from: imageUrl!) { data, response, error in
-            guard let data = data, error == nil else { return }
-            
-            DispatchQueue.main.async() { [] in
-                cell.movieImageView.image = UIImage(data: data)
-            }
-        }
-        cell.nameLabel.text = cellRow.title
-        cell.dateLabel.text = cellRow.release_date
-        cell.imdbLabel.text = String(describing: cellRow.vote_average!)
-        return cell
-    }
-    
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+        
+        cell.configure(movie: movieViewModel.movies[indexPath.row])
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let vc = MovieListDetailViewController()
         vc.id = movieViewModel.movies[indexPath.row].id!
-        var navController: UINavigationController!
         
+        var navController: UINavigationController!
         navController = UINavigationController(rootViewController: vc)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true)
@@ -99,7 +81,6 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     func loadLoader() {
         loader.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         loader.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        
     }
 }
 
@@ -109,15 +90,19 @@ extension MovieListViewController: MoveListViewModelDelegate {
     func handleViewModelOutput(_ output: [Result]) {
         movieViewModel.movies = movieViewModel.movies + output
         DispatchQueue.main.async {
-            self.tableView.isHidden = false
             self.tableView.reloadData()
         }
     }
     
     func loadingActive(status: Bool) {
-        print(status)
         DispatchQueue.main.async {
-            status ? self.loader.startAnimating() : self.loader.stopAnimating()
+            if status == true {
+                self.tableView.isHidden = true
+                self.loader.startAnimating()
+            } else {
+                self.tableView.isHidden = false
+                self.loader.stopAnimating()
+            }
         }
     }
 }

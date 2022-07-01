@@ -20,7 +20,16 @@ class MovieListViewModel: MovieListViewModelProtocol {
         movieService.getMovies(currentPage: currentPage) { movies in
             self.delegate?.handleViewModelOutput(movies)
         }
-        self.delegate?.loadingActive(status: false)
+        
+        let seconds = 0.5
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            self.delegate?.loadingActive(status: false)
+        }
+  
+    }
+    
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
     
     func numberOfRows() -> Int {

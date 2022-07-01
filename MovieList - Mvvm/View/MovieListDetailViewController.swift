@@ -58,18 +58,19 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
         viewModel.movie = output
         
         DispatchQueue.main.async {
-//            self.getImage(imagePath: (self.viewModel.movie?.posterPath!)!)
+            self.getImage(imagePath: (self.viewModel.movie?.posterPath!)!)
             self.title = self.viewModel.movie?.title!
             self.nameLabel.text = self.viewModel.movie?.title!
             self.overViewLabel.text = self.viewModel.movie?.overview!
         }
     }
     
+    //MARK: - Functions
     func getImage(imagePath: String) {
         let imageBaseString = "https://image.tmdb.org/t/p/w500"
         let urlString = imageBaseString + imagePath
         let imageUrl = URL(string: urlString)
-        getData(from: imageUrl!) { data, response, error in
+        viewModel.getData(from: imageUrl!) { data, response, error in
             guard let data = data, error == nil else { return }
             
             DispatchQueue.main.async() { [weak self] in
@@ -77,13 +78,8 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
             }
         }
     }
-    
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
-    
+
     func constraints() {
-        
         imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
         imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
         imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
