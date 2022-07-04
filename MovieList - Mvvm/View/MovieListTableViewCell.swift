@@ -30,7 +30,7 @@ class MovieListTableViewCell: UITableViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.borderColor  = UIColor.gray.cgColor
         imageView.layer.borderWidth  = 1
-        imageView.layer.cornerRadius = 18.75
+        imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView

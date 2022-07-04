@@ -13,7 +13,7 @@ class MovieListViewController: UIViewController {
     // MARK: - Properties
     var tableView = UITableView()
     var movieViewModel = MovieListViewModel()
-    var currentPage = 1
+    var currentPage = 3
     
     var loader: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .large)
@@ -24,15 +24,29 @@ class MovieListViewController: UIViewController {
     // MARK: - Override Function
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         appyLoad()
         loadTableView()
         movieViewModel.delayForActivityIndicator()
+        pullToRefresh()
     }
     
     func appyLoad() {
         title = "Movies"
         view.backgroundColor = .white
         movieViewModel.delegate = self
+        movieViewModel.loadData(currentPage: currentPage)
+    }
+    
+    func pullToRefresh() {
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+    }
+    
+    @objc func didPullToRefresh() {
+        print("start refreshing")
+        currentPage = 3
+        movieViewModel.movies.removeAll()
         movieViewModel.loadData(currentPage: currentPage)
     }
 }
@@ -91,6 +105,7 @@ extension MovieListViewController: MoveListViewModelDelegate {
     func handleViewModelOutput(_ output: [Result]) {
         movieViewModel.movies = movieViewModel.movies + output
         DispatchQueue.main.async {
+            self.tableView.refreshControl?.endRefreshing()
             self.tableView.reloadData()
         }
     }
