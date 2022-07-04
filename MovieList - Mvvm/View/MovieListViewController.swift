@@ -32,7 +32,7 @@ class MovieListViewController: UIViewController {
     }
     
     func appyLoad() {
-        title = "Movies"
+        title = Constants.tableViewTitle
         view.backgroundColor = .white
         movieViewModel.delegate = self
         movieViewModel.loadData(currentPage: currentPage)
@@ -44,7 +44,6 @@ class MovieListViewController: UIViewController {
     }
     
     @objc func didPullToRefresh() {
-        print("start refreshing")
         currentPage = 3
         movieViewModel.movies.removeAll()
         movieViewModel.loadData(currentPage: currentPage)
@@ -63,7 +62,7 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell" , for: indexPath) as! MovieListTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifier , for: indexPath) as! MovieListTableViewCell
         
         cell.configure(movie: movieViewModel.movies[indexPath.row])
         return cell
@@ -85,7 +84,7 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.allowsSelection = true
-        tableView.register(MovieListTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(MovieListTableViewCell.self, forCellReuseIdentifier: Constants.identifier)
         tableView.frame = CGRect(x: 0, y: 0, width: view.safeAreaLayoutGuide.layoutFrame.width, height: view.safeAreaLayoutGuide.layoutFrame.height)
         view.addSubview(tableView)
         view.addSubview(loader)

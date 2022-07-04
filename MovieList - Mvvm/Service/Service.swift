@@ -12,7 +12,7 @@ struct Service {
     
     // MARK: - All Movies
     func getMovies(currentPage: Int, completion: @escaping ([Result]) -> ()) {
-        let url = URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=16b57169954864f01854a6d42dbd2234&language=en-US&page=\(currentPage)")
+        let url = URL(string: Constants.movieApi + String(currentPage))
         
         URLSession.shared.dataTask(with: url!) { data, response, error in
             if error != nil {
@@ -32,8 +32,8 @@ struct Service {
     
     // MARK: - Detail Page Movie
     func getMovieDetails(id: Int, completion: @escaping (SingleMovie) -> ()) {
-        let baseUrl = "https://api.themoviedb.org/3/movie/"
-        let apiKey = "?api_key=16b57169954864f01854a6d42dbd2234&61604"
+        let baseUrl = Constants.baseUrl
+        let apiKey = Constants.apiKey
         let url = URL(string: baseUrl + String(id) + apiKey)
         
         URLSession.shared.dataTask(with: url!) { data, response, error in

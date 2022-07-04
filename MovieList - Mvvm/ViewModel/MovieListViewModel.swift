@@ -23,7 +23,7 @@ class MovieListViewModel: MovieListViewModelProtocol {
     
     func delayForActivityIndicator() {
         self.delegate?.loadingActive(status: true)
-        let seconds = 0.5
+        let seconds = 1.0
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             self.delegate?.loadingActive(status: false)
         }

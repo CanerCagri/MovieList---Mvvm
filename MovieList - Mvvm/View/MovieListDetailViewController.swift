@@ -67,7 +67,7 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
     
     //MARK: - Functions
     func getImage(imagePath: String) {
-        let imageBaseString = "https://image.tmdb.org/t/p/w500"
+        let imageBaseString = Constants.imageBaseUrl
         let urlString = imageBaseString + imagePath
         let imageUrl = URL(string: urlString)
         viewModel.getData(from: imageUrl!) { data, response, error in

@@ -67,7 +67,7 @@ class MovieListTableViewCell: UITableViewCell {
     }
     
     func configure(movie: Result) {
-        let imageBaseString = "https://image.tmdb.org/t/p/w500"
+        let imageBaseString = Constants.imageBaseUrl
         let urlString = imageBaseString + movie.poster_path!
         let imageUrl = URL(string: urlString)
         movieViewModel.getData(from: imageUrl!) { data, response, error in
