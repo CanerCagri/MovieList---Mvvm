@@ -11,6 +11,7 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
     
     // MARK: - Properties
     var id: Int?
+    var lang: String?
     var viewModel = MovieListDetailViewModel()
     
     var imageView: UIImageView = {
@@ -48,7 +49,6 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
     // MARK: - Lifecycle Method
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         applyLoad()
         constraints()
     }
@@ -105,6 +105,6 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
         view.addSubview(nameLabel)
         view.addSubview(overViewLabel)
         viewModel.delegate = self
-        viewModel.loadData(id: id!)
+        viewModel.loadData(id: id!, lang: lang!)
     }
 }

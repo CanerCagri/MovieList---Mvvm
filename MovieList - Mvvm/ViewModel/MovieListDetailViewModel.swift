@@ -7,13 +7,13 @@
 
 import Foundation
 
-class MovieListDetailViewModel: MovieListDetailProtocols {
+class MovieListDetailViewModel: MovieListDetailProtocol {
     var delegate: MovieListDetailDelegate?
     var movieService = Service()
     
     var movie : SingleMovie?
-    func loadData(id: Int) {
-        movieService.getMovieDetails(id: id) { movie in
+    func loadData(id: Int, lang: String) {
+        movieService.getMovieDetails(id: id, lang: lang) { movie in
             self.delegate?.handleViewModelOutput(movie)
         }
     }

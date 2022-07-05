@@ -7,9 +7,9 @@
 
 import Foundation
 
-protocol MovieListDetailProtocols {
+protocol MovieListDetailProtocol {
     var delegate: MovieListDetailDelegate? { get set }
-    func loadData(id: Int)
+    func loadData(id: Int, lang: String)
 }
 
 protocol MovieListDetailDelegate {

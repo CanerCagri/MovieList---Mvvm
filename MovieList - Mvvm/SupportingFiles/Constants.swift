@@ -15,4 +15,6 @@ struct Constants {
     static var apiKey = "?api_key=16b57169954864f01854a6d42dbd2234&61604"
     static var tableViewTitle = "Movies"
     static var identifier = "cell"
+    static var tr = "&language=tr-TR"
+    static var en = "&language=en-US"
 }

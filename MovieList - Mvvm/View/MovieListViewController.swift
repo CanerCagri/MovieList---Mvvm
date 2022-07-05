@@ -11,22 +11,35 @@ import UIKit
 class MovieListViewController: UIViewController {
     
     // MARK: - Properties
-    var tableView = UITableView()
     var movieViewModel = MovieListViewModel()
     var currentPage = 3
+    let pickerViewLang = ["EN", "TR"]
+    var selectedPicker = "EN"
     
+    var tableView: UITableView = {
+        var table = UITableView()
+        table.isHidden = true
+        table.separatorColor = .none
+        table.allowsSelection = true
+        table.register(MovieListTableViewCell.self, forCellReuseIdentifier: Constants.identifier)
+        return table
+    }()
+
     var loader: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .large)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         return activityIndicatorView
     }()
     
-    // MARK: - Lifecycle Function
+    var picker = UIPickerView()
+    
+    // MARK: - Lifecycle Method
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appyLoad()
         loadTableView()
+        loadPickerView()
         movieViewModel.delayForActivityIndicator()
         pullToRefresh()
     }
@@ -48,6 +61,36 @@ class MovieListViewController: UIViewController {
         movieViewModel.movies.removeAll()
         movieViewModel.loadData(currentPage: currentPage)
     }
+    
+    func loadTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.frame = CGRect(x: 0, y: 120, width: view.safeAreaLayoutGuide.layoutFrame.width, height: view.safeAreaLayoutGuide.layoutFrame.height - 120)
+        view.addSubview(tableView)
+        view.addSubview(loader)
+        view.addSubview(picker)
+        loadLoader()
+        
+    }
+    
+    func loadLoader() {
+        loader.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        loader.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+    }
+    
+    func loadPickerView() {
+        picker.delegate = self
+        picker.dataSource = self
+        picker.isHidden = true
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.frame = CGRect.init(x: view.safeAreaLayoutGuide.layoutFrame.width / 3, y: 35, width: 150, height: 100)
+    }
+    
 }
 
 // MARK: - TableView Delegate and DataSource
@@ -71,30 +114,38 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = MovieListDetailViewController()
         vc.id = movieViewModel.movies[indexPath.row].id!
+        vc.lang = selectedPicker
         
         var navController: UINavigationController!
         navController = UINavigationController(rootViewController: vc)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true)
     }
+}
+
+//MARK: - PickerView Delegate and DataSource
+extension MovieListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
-    func loadTableView() {
-        tableView.isHidden = true
-        tableView.separatorColor = .none
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.allowsSelection = true
-        tableView.register(MovieListTableViewCell.self, forCellReuseIdentifier: Constants.identifier)
-        tableView.frame = CGRect(x: 0, y: 0, width: view.safeAreaLayoutGuide.layoutFrame.width, height: view.safeAreaLayoutGuide.layoutFrame.height)
-        view.addSubview(tableView)
-        view.addSubview(loader)
-        loadLoader()
-        
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
     }
     
-    func loadLoader() {
-        loader.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        loader.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerViewLang.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        let row = pickerViewLang[row]
+        return row
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        if pickerViewLang[row] == "EN" {
+            selectedPicker = Constants.en
+        } else if pickerViewLang[row] == "TR" {
+            selectedPicker = Constants.tr
+        }
     }
 }
 
@@ -113,9 +164,11 @@ extension MovieListViewController: MoveListViewModelDelegate {
         DispatchQueue.main.async {
             if status == true {
                 self.tableView.isHidden = true
+                self.picker.isHidden = true
                 self.loader.startAnimating()
             } else {
                 self.tableView.isHidden = false
+                self.picker.isHidden = false
                 self.loader.stopAnimating()
             }
         }

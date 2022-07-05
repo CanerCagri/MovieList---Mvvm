@@ -31,10 +31,10 @@ struct Service {
     }
     
     // MARK: - Detail Page Movie
-    func getMovieDetails(id: Int, completion: @escaping (SingleMovie) -> ()) {
+    func getMovieDetails(id: Int, lang: String, completion: @escaping (SingleMovie) -> ()) {
         let baseUrl = Constants.baseUrl
         let apiKey = Constants.apiKey
-        let url = URL(string: baseUrl + String(id) + apiKey)
+        let url = URL(string: baseUrl + String(id) + apiKey + lang)
         
         URLSession.shared.dataTask(with: url!) { data, response, error in
             if error != nil {
