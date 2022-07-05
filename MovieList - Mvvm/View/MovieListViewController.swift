@@ -21,7 +21,7 @@ class MovieListViewController: UIViewController {
         return activityIndicatorView
     }()
     
-    // MARK: - Override Function
+    // MARK: - Lifecycle Function
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -103,9 +103,9 @@ extension MovieListViewController: MoveListViewModelDelegate {
     
     func handleViewModelOutput(_ output: [Result]) {
         movieViewModel.movies = movieViewModel.movies + output
-        DispatchQueue.main.async {
-            self.tableView.refreshControl?.endRefreshing()
-            self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.refreshControl?.endRefreshing()
+            self?.tableView.reloadData()
         }
     }
     

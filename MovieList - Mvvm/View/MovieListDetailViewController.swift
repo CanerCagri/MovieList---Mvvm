@@ -45,7 +45,7 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
         return label
     }()
     
-    // MARK: - Override Method
+    // MARK: - Lifecycle Method
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,24 +57,27 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
     func handleViewModelOutput(_ output: SingleMovie) {
         viewModel.movie = output
         
-        DispatchQueue.main.async {
-            self.getImage(imagePath: (self.viewModel.movie?.posterPath!)!)
-            self.title = self.viewModel.movie?.title!
-            self.nameLabel.text = self.viewModel.movie?.title!
-            self.overViewLabel.text = self.viewModel.movie?.overview!
+        DispatchQueue.main.async() { [weak self] in
+            if let path = self?.viewModel.movie?.posterPath {
+                self?.downloadImage(path: path)
+            }
+            self?.title = self?.viewModel.movie?.title!
+            self?.nameLabel.text = self?.viewModel.movie?.title!
+            self?.overViewLabel.text = self?.viewModel.movie?.overview!
         }
     }
     
     //MARK: - Functions
-    func getImage(imagePath: String) {
-        let imageBaseString = Constants.imageBaseUrl
-        let urlString = imageBaseString + imagePath
-        let imageUrl = URL(string: urlString)
-        viewModel.getData(from: imageUrl!) { data, response, error in
-            guard let data = data, error == nil else { return }
-            
-            DispatchQueue.main.async() { [weak self] in
-                self?.imageView.image = UIImage(data: data)
+    private func downloadImage(path: String) {
+        let urlString = Constants.imageBaseUrl + path
+        guard let imageUrl = URL(string: urlString) else {
+            return
+        }
+        ImageCache.publicCache.load(url: imageUrl as NSURL) { image in
+            if let image = image {
+                DispatchQueue.main.async { [weak self] in
+                    self?.imageView.image = image
+                }
             }
         }
     }

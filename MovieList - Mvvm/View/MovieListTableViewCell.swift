@@ -67,15 +67,8 @@ class MovieListTableViewCell: UITableViewCell {
     }
     
     func configure(movie: Result) {
-        let imageBaseString = Constants.imageBaseUrl
-        let urlString = imageBaseString + movie.poster_path!
-        let imageUrl = URL(string: urlString)
-        movieViewModel.getData(from: imageUrl!) { data, response, error in
-            guard let data = data, error == nil else { return }
-            
-            DispatchQueue.main.async() { [] in
-                self.movieImageView.image = UIImage(data: data)
-            }
+        if let path = movie.poster_path {
+            downloadImage(path: path)
         }
         nameLabel.text = movie.title
         dateLabel.text = movie.release_date
@@ -111,6 +104,21 @@ class MovieListTableViewCell: UITableViewCell {
         imdbLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor , constant: 130).isActive = true
         imdbLabel.widthAnchor.constraint(equalToConstant: 250).isActive = true
         imdbLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
+    
+    private func downloadImage(path: String) {
+        let urlString = Constants.imageBaseUrl + path
+        guard let imageUrl = URL(string: urlString) else {
+            return
+        }
+        
+        ImageCache.publicCache.load(url: imageUrl as NSURL) { image in
+            if let image = image {
+                DispatchQueue.main.async { [weak self] in
+                    self?.movieImageView.image = image
+                }
+            }
+        }
     }
     
     required init?(coder: NSCoder) {

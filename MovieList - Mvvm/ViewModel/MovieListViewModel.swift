@@ -10,7 +10,6 @@ import Foundation
 class MovieListViewModel: MovieListViewModelProtocol {
     
     var delegate: MoveListViewModelDelegate?
-    
     var movieService = Service()
     var movies : [Result] = []
     
@@ -28,11 +27,6 @@ class MovieListViewModel: MovieListViewModelProtocol {
             self.delegate?.loadingActive(status: false)
         }
     }
-    
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
-    
     func numberOfRows() -> Int {
         return movies.count
     }
