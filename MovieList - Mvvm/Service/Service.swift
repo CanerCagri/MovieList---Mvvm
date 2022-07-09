@@ -7,49 +7,36 @@
 
 import Foundation
 import UIKit
+import Alamofire
 
 struct Service {
     
     // MARK: - All Movies
-    func getMovies(currentPage: Int, completion: @escaping ([Result]) -> ()) {
-        let url = URL(string: Constants.movieApi + String(currentPage))
+    func getMovies(currentPage: Int, completion: @escaping ([Result]?) -> ()) {
+        let url = Constants.movieApi + String(currentPage)
         
-        URLSession.shared.dataTask(with: url!) { data, response, error in
-            if error != nil {
-                print(error!)
+        AF.request(url).responseDecodable(of: MovieList.self) { (movie) in
+            guard let data = movie.value else {
+                completion(nil)
+                return
             }
-            if let safeData = data {
-                let decoder = JSONDecoder()
-                do {
-                    let result = try decoder.decode((MovieList.self), from: safeData)
-                    completion(result.results)
-                } catch {
-                    print(error)
-                }
-            }
-        }.resume()
+            completion(data.results)
+        }
     }
     
     // MARK: - Detail Page Movie
-    func getMovieDetails(id: Int, lang: String, completion: @escaping (SingleMovie) -> ()) {
-        let baseUrl = Constants.baseUrl
-        let apiKey = Constants.apiKey
-        let url = URL(string: baseUrl + String(id) + apiKey + lang)
+    func getMovieDetails(id: Int, lang: String, completion: @escaping (SingleMovie?) -> ()) {
+    
+        let url = Constants.baseUrl + String(id) + Constants.apiKey + lang
         
-        URLSession.shared.dataTask(with: url!) { data, response, error in
-            if error != nil {
-                print(error!)
+        AF.request(url).responseDecodable(of: SingleMovie.self) { (movie) in
+            
+            guard let data = movie.value else {
+                completion(nil)
+                return
             }
-            if let safeData = data {
-                let decoder = JSONDecoder()
-                do {
-                    let result = try decoder.decode((SingleMovie.self), from: safeData)
-                    completion(result)
-                } catch {
-                    print(error)
-                }
-            }
-        }.resume()
+            completion(data)
+        }
     }
 }
 

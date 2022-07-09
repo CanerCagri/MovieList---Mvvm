@@ -14,7 +14,7 @@ class MovieListDetailViewModel: MovieListDetailProtocol {
     var movie : SingleMovie?
     func loadData(id: Int, lang: String) {
         movieService.getMovieDetails(id: id, lang: lang) { movie in
-            self.delegate?.handleViewModelOutput(movie)
+            self.delegate?.handleViewModelOutput(movie!)
         }
     }
 }
