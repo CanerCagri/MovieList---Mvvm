@@ -16,7 +16,7 @@ class MovieListViewModel: MovieListViewModelProtocol {
     
     func loadData(currentPage: Int) {
         movieService.getMovies(currentPage: currentPage) { movies in
-            self.delegate?.handleViewModelOutput(movies)
+            self.delegate?.handleViewModelOutput(movies ?? [] )
         }
     }
     
