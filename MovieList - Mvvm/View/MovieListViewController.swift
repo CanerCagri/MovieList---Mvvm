@@ -13,8 +13,6 @@ class MovieListViewController: UIViewController {
     // MARK: - Properties
     var movieViewModel = MovieListViewModel()
     var currentPage = 3
-    let pickerViewLang = ["EN", "TR"]
-    var selectedPicker = "EN"
     
     var tableView: UITableView = {
         var table = UITableView()
@@ -88,7 +86,7 @@ class MovieListViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         picker.translatesAutoresizingMaskIntoConstraints = false
-        picker.frame = CGRect.init(x: view.safeAreaLayoutGuide.layoutFrame.width / 3, y: 35, width: 150, height: 100)
+        picker.frame = CGRect.init(x: view.safeAreaLayoutGuide.layoutFrame.width / 1.5, y: 35, width: 150, height: 100)
     }
     
 }
@@ -114,7 +112,7 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = MovieListDetailViewController()
         vc.id = movieViewModel.movies[indexPath.row].id!
-        vc.lang = selectedPicker
+        vc.lang = Constants.defaultPicker
         
         var navController: UINavigationController!
         navController = UINavigationController(rootViewController: vc)
@@ -123,7 +121,7 @@ extension MovieListViewController: UITableViewDelegate , UITableViewDataSource {
     }
 }
 
-//MARK: - PickerView Delegate and DataSource
+// MARK: - PickerView Delegate And DataSource
 extension MovieListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -131,20 +129,20 @@ extension MovieListViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerViewLang.count
+        return Constants.pickerViewLanguagues.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let row = pickerViewLang[row]
+        let row = Constants.pickerViewLanguagues[row]
         return row
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        if pickerViewLang[row] == "EN" {
-            selectedPicker = Constants.en
-        } else if pickerViewLang[row] == "TR" {
-            selectedPicker = Constants.tr
+        if Constants.pickerViewLanguagues[row] == Constants.en {
+            Constants.defaultPicker = Constants.enInfo
+        } else if Constants.pickerViewLanguagues[row] == Constants.tr {
+            Constants.defaultPicker = Constants.trInfo
         }
     }
 }
