@@ -26,7 +26,6 @@ struct Service {
     
     // MARK: - Detail Page Movie
     func getMovieDetails(id: Int, lang: String, completion: @escaping (SingleMovie?) -> ()) {
-    
         let url = Constants.baseUrl + String(id) + Constants.apiKey + lang
         
         AF.request(url).responseDecodable(of: SingleMovie.self) { (movie) in

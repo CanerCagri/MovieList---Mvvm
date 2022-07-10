@@ -11,13 +11,11 @@ import UIKit
 public class ImageCache {
     
     // MARK: - Properties
-    
     public static let publicCache = ImageCache()
     private let cachedImages = NSCache<NSURL, UIImage>()
     private var loadingResponses = [NSURL: [(UIImage?) -> Swift.Void]]()
     
     // MARK: - Methods
-    
     public final func image(url: NSURL) -> UIImage? {
         return cachedImages.object(forKey: url)
     }
