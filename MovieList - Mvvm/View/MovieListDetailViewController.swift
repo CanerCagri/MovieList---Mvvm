@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
     
@@ -25,21 +26,11 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
         return imageView
     }()
     
-    var nameLabel: UILabel = {
-        var label = UILabel()
-        label.numberOfLines = 2
-        label.textColor = .black
-        label.textAlignment = .center
-        label.font = UIFont.preferredFont(forTextStyle: .headline)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     var overViewLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.lineBreakMode = .byWordWrapping
+        label.lineBreakMode = .byTruncatingHead
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .lightGray
         label.font = UIFont.preferredFont(forTextStyle: .body)
@@ -62,7 +53,6 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
                 self?.downloadImage(path: path)
             }
             self?.title = self?.viewModel.movie?.title!
-            self?.nameLabel.text = self?.viewModel.movie?.title!
             self?.overViewLabel.text = self?.viewModel.movie?.overview!
         }
     }
@@ -83,27 +73,26 @@ class MovieListDetailViewController: UIViewController, MovieListDetailDelegate {
     }
 
     func constraints() {
-        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
-        imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4).isActive = true
+        view.addSubview(imageView)
+        view.addSubview(overViewLabel)
         
-        nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
-        nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 70).isActive = true
-        nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -70).isActive = true
-        nameLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 70).isActive = true
-        
-        overViewLabel.topAnchor.constraint(equalTo: nameLabel.topAnchor , constant: 10).isActive = true
-        overViewLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
-        overViewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25).isActive = true
-        overViewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25).isActive = true
+        imageView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(70)
+            make.leading.equalToSuperview().offset(40)
+            make.trailing.equalToSuperview().offset(-40)
+            make.height.equalToSuperview().multipliedBy(0.4)
+        }
+
+        overViewLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp_bottomMargin).offset(20)
+            make.bottom.equalToSuperview().offset(-10)
+            make.leading.equalToSuperview().offset(25)
+            make.trailing.equalToSuperview().offset(-25)
+        }
     }
     
     func applyLoad() {
         view.backgroundColor = .white
-        view.addSubview(imageView)
-        view.addSubview(nameLabel)
-        view.addSubview(overViewLabel)
         viewModel.delegate = self
         viewModel.loadData(id: id!, lang: lang!)
     }

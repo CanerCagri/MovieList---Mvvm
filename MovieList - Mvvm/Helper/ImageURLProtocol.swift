@@ -11,14 +11,12 @@ import UIKit
 class ImageURLProtocol: URLProtocol {
     
     // MARK: - Properties
-    
     var cancelledOrComplete: Bool = false
     var block: DispatchWorkItem!
     
     private static let queue = OS_dispatch_queue_serial(label: "com.apple.imageLoaderURLProtocol")
     
     // MARK: - Methods
-    
     override class func canInit(with request: URLRequest) -> Bool {
         return true
     }
