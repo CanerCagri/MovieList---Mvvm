@@ -1,7 +1,7 @@
 # Movie List App
 I just wanted to make this app fast usable/clonable without 3rd party libraries. Created 100% Programmatically and with MVVM Architecture.
 
-The application is completed. Easy to clonable here w/o 3rd party libraries: https://github.com/CanerCagri/MovieList---Mvvm/tree/a2ff92cffe1118c91815ca718268838978c5b8b4
+The application is completed. Easy to download zip file here without 3rd party libraries: https://github.com/CanerCagri/MovieList---Mvvm/tree/a2ff92cffe1118c91815ca718268838978c5b8b4
 
 **But from now, I will start implementing 3rd party libraries in a different git branch.**
 
@@ -10,10 +10,12 @@ The application is completed. Easy to clonable here w/o 3rd party libraries: htt
 [<img src="" width="50%">](https://user-images.githubusercontent.com/99286902/178115851-29108af8-a9ef-464a-8547-f891357854be.mp4)
 
 
-## Tech Stack
+## Tech Stack, Libraries
 * [Swift](https://developer.apple.com/swift) , [UIKit](https://developer.apple.com/documentation/uikit)
 * [MVVM Architecture](https://developer.android.com/topic/architecture)
 * [Programmatically Coding](https://www.hackingwithswift.com/read/8/2/building-a-uikit-user-interface-programmatically)
+* [Alamofire](https://github.com/Alamofire/Alamofire)
+* [SnapKit](https://github.com/SnapKit/SnapKit)
 
 
 ## Features
